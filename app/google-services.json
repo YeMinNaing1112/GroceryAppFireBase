@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "940316823655",
+    "project_id": "fir-composeproject-1387b",
+    "storage_bucket": "fir-composeproject-1387b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:940316823655:android:5a3eb9c389ee53e21c44c2",
+        "android_client_info": {
+          "package_name": "com.yeminnaing.firebasecomposeproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2RC3CuvXTB8oyIz99ICX6939ZiYezdhA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
