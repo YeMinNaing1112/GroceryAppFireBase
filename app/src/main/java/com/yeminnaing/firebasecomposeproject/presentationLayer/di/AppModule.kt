@@ -2,10 +2,11 @@ package com.yeminnaing.firebasecomposeproject.presentationLayer.di
 
 import com.google.firebase.Firebase
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.database
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
+import com.yeminnaing.firebasecomposeproject.dataLayer.network.CloudFireStoreImpl
 import com.yeminnaing.firebasecomposeproject.dataLayer.network.RealTimeDataBaseImpl
-import com.yeminnaing.firebasecomposeproject.dataLayer.repositories.GetDataFromFireBaseRepoImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,7 +18,7 @@ import javax.inject.Singleton
 object AppModule {
     @Provides
     @Singleton
-    fun provideFireBaseData():DatabaseReference{
+    fun provideRealTimeDataBaseReference():DatabaseReference{
         return Firebase.database.reference
     }
 
@@ -29,5 +30,16 @@ object AppModule {
         )
     }
 
+    @Provides
+    @Singleton
+    fun provideFireStoreReference(): FirebaseFirestore {
+        return Firebase.firestore
+    }
+
+    @Provides
+    @Singleton
+    fun provideFireStoreImpl(fireStoreReference:FirebaseFirestore):CloudFireStoreImpl{
+        return CloudFireStoreImpl(fireStoreReference)
+    }
 
 }

@@ -1,9 +1,9 @@
 package com.yeminnaing.firebasecomposeproject.domainLayer.usecase
 
-import com.yeminnaing.firebasecomposeproject.dataLayer.repositories.GetDataFromFireBaseRepoImpl
+import com.yeminnaing.firebasecomposeproject.dataLayer.repositories.GroceryModelRepoImpl
 
 class GetDataUseCase(
-    val repoImpl: GetDataFromFireBaseRepoImpl
+    val repoImpl: GroceryModelRepoImpl
 ) {
 
 }

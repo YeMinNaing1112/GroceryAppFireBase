@@ -2,7 +2,7 @@ package com.yeminnaing.firebasecomposeproject.presentationLayer
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.yeminnaing.firebasecomposeproject.dataLayer.repositories.GetDataFromFireBaseRepoImpl
+import com.yeminnaing.firebasecomposeproject.dataLayer.repositories.GroceryModelRepoImpl
 import com.yeminnaing.firebasecomposeproject.dataLayer.response.GroceryResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GroceryScreenVm @Inject constructor(
-    private val repoImpl: GetDataFromFireBaseRepoImpl,
+    private val repoImpl: GroceryModelRepoImpl,
 ) : ViewModel() {
     val _getDataState = MutableStateFlow<GetDataState>(GetDataState.Empty)
     val getDataState = _getDataState.asStateFlow()

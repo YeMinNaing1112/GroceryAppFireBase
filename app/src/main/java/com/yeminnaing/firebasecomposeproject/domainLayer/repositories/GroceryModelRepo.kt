@@ -1,10 +1,8 @@
 package com.yeminnaing.firebasecomposeproject.domainLayer.repositories
 
 import com.yeminnaing.firebasecomposeproject.dataLayer.response.GroceryResponse
-import com.yeminnaing.firebasecomposeproject.domainLayer.Resources
-import com.yeminnaing.firebasecomposeproject.domainLayer.response.GroceryModel
 
-interface GetDataFromFireBaseRepo {
+interface GroceryModelRepo {
      fun getData(
         onSuccess: (groceries: List<GroceryResponse>) -> Unit,
         onFialure: (String) -> Unit,
