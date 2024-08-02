@@ -1,5 +1,7 @@
 package com.yeminnaing.firebasecomposeproject.presentationLayer
 
+import android.content.Context
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.yeminnaing.firebasecomposeproject.dataLayer.repositories.GroceryModelRepoImpl
@@ -33,13 +35,17 @@ class GroceryScreenVm @Inject constructor(
         )
     }
 
-    fun addData(name:String,description:String,amount:Int){
-        repoImpl.addGroceries(name, description, amount)
+    fun addData(name:String,description:String,amount:Int,image:String){
+        repoImpl.addGroceries(name, description, amount,image)
     }
 
 
     fun removeValue(name:String){
         repoImpl.removeValue(name)
+    }
+
+    fun upLoadImage(image: Uri, groceryResponse: GroceryResponse,context: Context){
+        repoImpl.upLoadImage(image,groceryResponse,context)
     }
 
     sealed interface GetDataState {

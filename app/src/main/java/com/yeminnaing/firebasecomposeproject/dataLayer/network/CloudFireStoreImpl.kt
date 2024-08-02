@@ -1,5 +1,7 @@
 package com.yeminnaing.firebasecomposeproject.dataLayer.network
 
+import android.content.Context
+import android.net.Uri
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -10,8 +12,8 @@ class CloudFireStoreImpl @Inject constructor(
     private val db: FirebaseFirestore,
 ) : FireBaseApi {
 
-//    private val storage = FirebaseStorage.getInstance()
-//    private val storageReference = storage.reference
+    private val storage = FirebaseStorage.getInstance()
+    private val storageReference = storage.reference
     override fun getGroceries(
         onSuccess: (groceries: List<GroceryResponse>) -> Unit,
         onFialure: (String) -> Unit,
@@ -38,7 +40,7 @@ class CloudFireStoreImpl @Inject constructor(
             }
     }
 
-    override fun addGroceries(name: String, description: String, amount: Int) {
+    override fun addGroceries(name: String, description: String, amount: Int, image: String) {
          val groceryMap= hashMapOf(
              "name" to name,
              "description" to description,
@@ -59,4 +61,10 @@ class CloudFireStoreImpl @Inject constructor(
             .addOnSuccessListener { Log.d("Success", "SuccessFully Delete Data") }
             .addOnFailureListener{Log.d("Fail", "Fail to Delete Data") }
     }
+
+    override fun upLoadImage(image: Uri, groceryResponse: GroceryResponse, context: Context) {
+
+    }
+
+
 }
