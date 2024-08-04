@@ -1,7 +1,6 @@
 package com.yeminnaing.firebasecomposeproject.dataLayer.network
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.net.Uri
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -9,7 +8,6 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.yeminnaing.firebasecomposeproject.dataLayer.response.GroceryResponse
-import java.io.ByteArrayOutputStream
 import java.util.UUID
 import javax.inject.Inject
 

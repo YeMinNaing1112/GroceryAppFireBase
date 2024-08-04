@@ -1,6 +1,5 @@
 package com.yeminnaing.firebasecomposeproject.presentationLayer
 
-import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
@@ -20,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -103,8 +103,8 @@ fun GroceryScreen(modifier: Modifier = Modifier) {
                 Surface(
                     modifier = modifier
                         .padding(16.dp)
-                        .width(IntrinsicSize.Min)
                         .height(IntrinsicSize.Min)
+                        .width(IntrinsicSize.Min)
                 ) {
                     Column(
                         modifier = modifier
@@ -132,21 +132,31 @@ fun GroceryScreen(modifier: Modifier = Modifier) {
                             placeholder = { Text("Amount") },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                         )
+                        AsyncImage(model = selectedImageUri, contentDescription = "",modifier.clickable {
+                            photoPickerLauncher.launch(
+                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                            )
+                        }.size(100.dp).align(Alignment.CenterHorizontally))
                         Button(onClick = {
                             showDialogState = false
-                            viewModel.addData(
-                                name = groceryName,
-                                description = description,
-                                amount = amount.toInt(),
-                                image = ""
-                            )
+                            selectedImageUri?.let { uri ->
+                                viewModel.
+                                upLoadImage(image = uri, groceryResponse = GroceryResponse(
+                                    name = groceryName,
+                                    description =description,
+                                    amount =amount.toInt()
+                                ), context = context) }
                             groceryName = ""
                             description = ""
                             amount = ""
-                        }) {
+                        },modifier.padding(end = 16.dp)) {
                             Text(text = "Save")
 
                         }
+
+
+
+
 
 
                     }
