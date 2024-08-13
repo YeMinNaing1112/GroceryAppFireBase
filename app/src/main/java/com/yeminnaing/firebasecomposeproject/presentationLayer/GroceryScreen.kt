@@ -51,15 +51,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import coil.compose.AsyncImage
 import com.yeminnaing.firebasecomposeproject.R
 import com.yeminnaing.firebasecomposeproject.dataLayer.response.GroceryResponse
 import com.yeminnaing.firebasecomposeproject.domainLayer.response.GroceryModel
+import com.yeminnaing.firebasecomposeproject.presentationLayer.authScreen.AuthenticationVm
+import com.yeminnaing.firebasecomposeproject.presentationLayer.navigation.GroceryAppScreens
 
 @Composable
-fun GroceryScreen(modifier: Modifier = Modifier) {
+fun GroceryScreen(modifier: Modifier = Modifier,navController: NavController) {
 
     val viewModel: GroceryScreenVm = hiltViewModel()
+    val authViewModel:AuthenticationVm= hiltViewModel()
     val dataState by viewModel.getDataState.collectAsState()
     var showDialogState by remember { mutableStateOf(false) }
     var groceryName by remember { mutableStateOf("") }
@@ -97,6 +102,15 @@ fun GroceryScreen(modifier: Modifier = Modifier) {
            )
             selectedImageUri?.let { uri -> viewModel.upLoadImage(image = uri, groceryResponse = it, context = context) }
 
+        }, signOut = {
+            authViewModel.signOut()
+            navController.navigate(GroceryAppScreens.LogInScreen.route){
+                popUpTo(navController.graph.findStartDestination().id){
+                    saveState=false
+                    inclusive=true
+                }
+                launchSingleTop=true
+            }
         })
         if (showDialogState) {
             Dialog(onDismissRequest = { showDialogState = false }) {
@@ -132,11 +146,15 @@ fun GroceryScreen(modifier: Modifier = Modifier) {
                             placeholder = { Text("Amount") },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                         )
-                        AsyncImage(model = selectedImageUri, contentDescription = "",modifier.clickable {
-                            photoPickerLauncher.launch(
-                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                            )
-                        }.size(100.dp).align(Alignment.CenterHorizontally))
+                        AsyncImage(model = selectedImageUri, contentDescription = "",
+                            modifier
+                                .clickable {
+                                    photoPickerLauncher.launch(
+                                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                                    )
+                                }
+                                .size(100.dp)
+                                .align(Alignment.CenterHorizontally))
                         Button(onClick = {
                             showDialogState = false
                             selectedImageUri?.let { uri ->
@@ -175,44 +193,51 @@ fun GroceryScreenDesign(
     paddingValue: PaddingValues,
     remove: (name: String) -> Unit,
     edit: (groceryResponse: GroceryResponse) -> Unit,
-    addPhoto: (groceryResponse: GroceryResponse) -> Unit
+    addPhoto: (groceryResponse: GroceryResponse) -> Unit,
+    signOut:()-> Unit
 ) {
+    Column {
+        Button(onClick = { signOut()}) {
+            Text(text = "SignOut")
 
-    when (dataState) {
-        GroceryScreenVm.GetDataState.Empty -> {
-            Text(
-                text = "Empty",
-                modifier = modifier
-                    .fillMaxSize(), fontSize = 20.sp
-
-            )
         }
+        when (dataState) {
+            GroceryScreenVm.GetDataState.Empty -> {
+                Text(
+                    text = "Empty",
+                    modifier = modifier
+                        .fillMaxSize(), fontSize = 20.sp
 
-        is GroceryScreenVm.GetDataState.Error -> {
-            Toast.makeText(LocalContext.current, "Error", Toast.LENGTH_SHORT).show()
-        }
+                )
+            }
 
-        is GroceryScreenVm.GetDataState.Success -> {
+            is GroceryScreenVm.GetDataState.Error -> {
+                Toast.makeText(LocalContext.current, "Error", Toast.LENGTH_SHORT).show()
+            }
 
-            LazyColumn(modifier = modifier.fillMaxSize()) {
-                items(dataState.data) { groceryResponse ->
-                    GroceryItemCard(groceryResponse, remove = {
-                        groceryResponse.name?.let { remove(it) }
-                    }, edit = {
-                        edit(groceryResponse)
-                    }, addPhoto = {
-                         addPhoto(groceryResponse)
-                    })
+            is GroceryScreenVm.GetDataState.Success -> {
+
+                LazyColumn(modifier = modifier.fillMaxWidth()) {
+                    items(dataState.data) { groceryResponse ->
+                        GroceryItemCard(groceryResponse, remove = {
+                            groceryResponse.name?.let { remove(it) }
+                        }, edit = {
+                            edit(groceryResponse)
+                        }, addPhoto = {
+                            addPhoto(groceryResponse)
+                        })
+                    }
+
                 }
+            }
 
+            GroceryScreenVm.GetDataState.Loading -> {
+                Box(modifier = modifier.fillMaxSize()) {
+                    Text(text = "Loading.....", modifier = modifier.align(Alignment.Center))
+                }
             }
         }
 
-        GroceryScreenVm.GetDataState.Loading -> {
-            Box(modifier = modifier.fillMaxSize()) {
-                Text(text = "Loading.....", modifier = modifier.align(Alignment.Center))
-            }
-        }
     }
 
 }
@@ -306,7 +331,8 @@ fun GroceryScreenDesignPrev() {
         paddingValue = PaddingValues(20.dp),
         remove = {},
         edit = {},
-        addPhoto = {}
+        addPhoto = {},
+        signOut = {}
     )
 }
 

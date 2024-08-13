@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.yeminnaing.firebasecomposeproject.presentationLayer.navigation.GroceryScreenNavGraph
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,7 +18,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            GroceryScreen()
+           GroceryScreenNavGraph()
               }
             }
         }
