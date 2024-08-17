@@ -6,9 +6,12 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.database
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.remoteConfig
 import com.yeminnaing.firebasecomposeproject.dataLayer.network.CloudFireStoreImpl
 import com.yeminnaing.firebasecomposeproject.dataLayer.network.RealTimeDataBaseImpl
 import com.yeminnaing.firebasecomposeproject.dataLayer.network.auth.FireBaseAuthManager
+import com.yeminnaing.firebasecomposeproject.dataLayer.network.remoteconfig.FireBaseRemoteConfigManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -55,6 +58,18 @@ object AppModule {
     @Singleton
     fun provideFireBaseAuthManager(mFireBaseAuth:FirebaseAuth):FireBaseAuthManager{
         return FireBaseAuthManager(mFireBaseAuth)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFireBaseConfigReference(): FirebaseRemoteConfig {
+        return Firebase.remoteConfig
+    }
+
+    @Provides
+    @Singleton
+    fun provideFireBaseRemoteConfigManager(mFireBaseRemoteConfig:FirebaseRemoteConfig):FireBaseRemoteConfigManager{
+        return FireBaseRemoteConfigManager(mFireBaseRemoteConfig)
     }
 
 }

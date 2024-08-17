@@ -20,7 +20,24 @@ class GroceryScreenVm @Inject constructor(
 
     init {
         getData()
+        setUpRemoteWithDefaultValues()
+        fetchRemoteConfig()
+
+
     }
+
+    fun getName():String {
+        return repoImpl.getAppNameFromRemoteConfig()
+    }
+
+    private fun setUpRemoteWithDefaultValues() {
+        repoImpl.setUpRemoteConfigWithDefaultValues()
+    }
+
+    private fun fetchRemoteConfig() {
+        repoImpl.fetchRemoteConfigs()
+    }
+
 
     private fun getData() {
         _getDataState.value=GetDataState.Loading

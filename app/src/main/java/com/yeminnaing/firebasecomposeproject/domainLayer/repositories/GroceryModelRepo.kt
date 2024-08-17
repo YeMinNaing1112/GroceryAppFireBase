@@ -20,4 +20,10 @@ interface GroceryModelRepo {
          name:String,
      )
     fun upLoadImage(image: Uri, groceryResponse: GroceryResponse,context: Context)
+
+    fun setUpRemoteConfigWithDefaultValues()
+
+    fun fetchRemoteConfigs()
+
+    fun getAppNameFromRemoteConfig() : String
 }

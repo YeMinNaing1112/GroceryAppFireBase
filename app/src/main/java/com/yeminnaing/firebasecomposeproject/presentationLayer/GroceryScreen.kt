@@ -29,12 +29,14 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -60,6 +62,7 @@ import com.yeminnaing.firebasecomposeproject.domainLayer.response.GroceryModel
 import com.yeminnaing.firebasecomposeproject.presentationLayer.authScreen.AuthenticationVm
 import com.yeminnaing.firebasecomposeproject.presentationLayer.navigation.GroceryAppScreens
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GroceryScreen(modifier: Modifier = Modifier,navController: NavController) {
 
@@ -83,11 +86,18 @@ fun GroceryScreen(modifier: Modifier = Modifier,navController: NavController) {
         })
 
     Scaffold(
+        topBar = {
+            TopAppBar(title = {
+                Text(text =viewModel.getName() )
+            })
+
+        },
         floatingActionButton = {
             FloatingActionButton(onClick = { showDialogState = true }) {
                 Text(text = "+")
             }
-        }
+        },
+
     ) { paddingValue ->
         GroceryScreenDesign(modifier = Modifier, dataState, paddingValue, remove = { name ->
             viewModel.removeValue(name)
