@@ -38,6 +38,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -57,6 +58,12 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import coil.compose.AsyncImage
 import com.yeminnaing.firebasecomposeproject.R
+import com.yeminnaing.firebasecomposeproject.dataLayer.analytic.FireBaseAnalyticManager
+import com.yeminnaing.firebasecomposeproject.dataLayer.analytic.PARAMETER_EMAIL
+import com.yeminnaing.firebasecomposeproject.dataLayer.analytic.SCREEN_HOME
+import com.yeminnaing.firebasecomposeproject.dataLayer.analytic.SCREEN_LOGIN
+import com.yeminnaing.firebasecomposeproject.dataLayer.analytic.TAP_ADD_GROCERY
+import com.yeminnaing.firebasecomposeproject.dataLayer.analytic.TAP_LOGIN
 import com.yeminnaing.firebasecomposeproject.dataLayer.response.GroceryResponse
 import com.yeminnaing.firebasecomposeproject.domainLayer.response.GroceryModel
 import com.yeminnaing.firebasecomposeproject.presentationLayer.authScreen.AuthenticationVm
@@ -75,6 +82,13 @@ fun GroceryScreen(modifier: Modifier = Modifier,navController: NavController) {
     var amount by remember { mutableStateOf("") }
     val context= LocalContext.current
 
+    val fireBaseAnalyticManager= FireBaseAnalyticManager()
+
+    LaunchedEffect(Unit){
+        fireBaseAnalyticManager.sendEventsToFireBaseAnalytic(context, SCREEN_HOME)
+    }
+
+
     var selectedImageUri by remember {
         mutableStateOf<Uri?>(null)
     }
@@ -82,7 +96,6 @@ fun GroceryScreen(modifier: Modifier = Modifier,navController: NavController) {
         contract = ActivityResultContracts.PickVisualMedia() ,
         onResult = {uri ->
             selectedImageUri =uri
-            Log.d("URI","$uri")
         })
 
     Scaffold(
@@ -93,7 +106,10 @@ fun GroceryScreen(modifier: Modifier = Modifier,navController: NavController) {
 
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { showDialogState = true }) {
+            FloatingActionButton(onClick = {
+                fireBaseAnalyticManager.sendEventsToFireBaseAnalytic(context, TAP_ADD_GROCERY)
+
+                showDialogState = true }) {
                 Text(text = "+")
             }
         },
@@ -114,7 +130,7 @@ fun GroceryScreen(modifier: Modifier = Modifier,navController: NavController) {
 
         }, signOut = {
             authViewModel.signOut()
-            navController.navigate(GroceryAppScreens.LogInScreen.route){
+            navController.navigate(GroceryAppScreens.LogInScreen){
                 popUpTo(navController.graph.findStartDestination().id){
                     saveState=false
                     inclusive=true

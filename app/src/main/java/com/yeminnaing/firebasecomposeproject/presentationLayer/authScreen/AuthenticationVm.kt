@@ -2,6 +2,7 @@ package com.yeminnaing.firebasecomposeproject.presentationLayer.authScreen
 
 import androidx.lifecycle.ViewModel
 import com.google.android.play.integrity.internal.o
+import com.yeminnaing.firebasecomposeproject.dataLayer.analytic.FireBaseAnalyticManager
 import com.yeminnaing.firebasecomposeproject.domainLayer.repositories.AuthenticationRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthenticationVm @Inject constructor(
-    private val authenticationRepo: AuthenticationRepo
+    private val authenticationRepo: AuthenticationRepo,
 ):ViewModel() {
     private var _authState= MutableStateFlow<AuthState>(AuthState.Empty)
     val authState=_authState.asStateFlow()

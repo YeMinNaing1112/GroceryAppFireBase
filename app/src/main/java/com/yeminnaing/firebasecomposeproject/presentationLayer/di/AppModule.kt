@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.remoteConfig
+import com.yeminnaing.firebasecomposeproject.dataLayer.analytic.FireBaseAnalyticManager
 import com.yeminnaing.firebasecomposeproject.dataLayer.network.CloudFireStoreImpl
 import com.yeminnaing.firebasecomposeproject.dataLayer.network.RealTimeDataBaseImpl
 import com.yeminnaing.firebasecomposeproject.dataLayer.network.auth.FireBaseAuthManager
@@ -71,5 +72,6 @@ object AppModule {
     fun provideFireBaseRemoteConfigManager(mFireBaseRemoteConfig:FirebaseRemoteConfig):FireBaseRemoteConfigManager{
         return FireBaseRemoteConfigManager(mFireBaseRemoteConfig)
     }
+
 
 }

@@ -8,26 +8,47 @@ import com.yeminnaing.firebasecomposeproject.presentationLayer.GroceryScreen
 import com.yeminnaing.firebasecomposeproject.presentationLayer.authScreen.LogInScreen
 import com.yeminnaing.firebasecomposeproject.presentationLayer.authScreen.SignInScreen
 
+//region Navigation With route
+//@Composable
+//fun GroceryScreenNavGraph() {
+//    val navController = rememberNavController()
+//    NavHost(
+//        navController = navController,
+//        startDestination = GroceryAppScreens.SignInScreen.route
+//    ) {
+//          composable(
+//           route=GroceryAppScreens.LogInScreen.route
+//          ){
+//            LogInScreen(navController)
+//          }
+//        composable(
+//            route=GroceryAppScreens.SignInScreen.route
+//        ){
+//            SignInScreen(navController)
+//        }
+//        composable(
+//            route=GroceryAppScreens.GroceryScreen.route
+//        ){
+//            GroceryScreen(navController = navController)
+//        }
+//    }
+//}
+//endregion
+
 @Composable
 fun GroceryScreenNavGraph() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = GroceryAppScreens.SignInScreen.route
+        startDestination = GroceryAppScreens.SignInScreen
     ) {
-          composable(
-           route=GroceryAppScreens.LogInScreen.route
-          ){
+        composable<GroceryAppScreens.LogInScreen> {
             LogInScreen(navController)
-          }
-        composable(
-            route=GroceryAppScreens.SignInScreen.route
-        ){
+        }
+        composable<GroceryAppScreens.SignInScreen> {
             SignInScreen(navController)
         }
-        composable(
-            route=GroceryAppScreens.GroceryScreen.route
-        ){
+        composable<GroceryAppScreens.GroceryScreen>{
             GroceryScreen(navController = navController)
         }
     }

@@ -30,6 +30,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import com.google.firebase.firestore.util.Util
+import com.yeminnaing.firebasecomposeproject.dataLayer.analytic.FireBaseAnalyticManager
+import com.yeminnaing.firebasecomposeproject.dataLayer.analytic.PARAMETER_EMAIL
+import com.yeminnaing.firebasecomposeproject.dataLayer.analytic.SCREEN_LOGIN
+import com.yeminnaing.firebasecomposeproject.dataLayer.analytic.TAP_LOGIN
+import com.yeminnaing.firebasecomposeproject.dataLayer.analytic.TAP_SIGNIN
 import com.yeminnaing.firebasecomposeproject.presentationLayer.navigation.GroceryAppScreens
 
 @Composable
@@ -38,9 +44,15 @@ fun LogInScreen(navController: NavHostController) {
     val viewModel: AuthenticationVm = hiltViewModel()
     val context= LocalContext.current
     val authState by viewModel.authState.collectAsState()
+    val fireBaseAnalyticManager=remember {FireBaseAnalyticManager()}
+
+    LaunchedEffect(Unit){
+        fireBaseAnalyticManager.sendEventsToFireBaseAnalytic(context, SCREEN_LOGIN)
+    }
+
     LaunchedEffect(authState) {
         when (authState) {
-            is AuthState.Authenticated -> navController.navigate(GroceryAppScreens.GroceryScreen.route) {
+            is AuthState.Authenticated -> navController.navigate(GroceryAppScreens.GroceryScreen) {
                 popUpTo(navController.graph.findStartDestination().id) {
                     saveState = false
                     inclusive = true
@@ -59,10 +71,12 @@ fun LogInScreen(navController: NavHostController) {
         }
     }
    LogInScreenDesign(logIn = {email, password ->
+       fireBaseAnalyticManager.sendEventsToFireBaseAnalytic(context, TAP_LOGIN,
+           PARAMETER_EMAIL,email)
                  viewModel.logIn(email, password)
    }
        , navigation = {
-           navController.navigate(GroceryAppScreens.SignInScreen.route){
+           navController.navigate(GroceryAppScreens.SignInScreen){
                popUpTo(navController.graph.findStartDestination().id){
                    saveState=true
                    inclusive=false
